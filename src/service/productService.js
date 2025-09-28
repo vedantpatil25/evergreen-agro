@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-const API_URL = 'http://localhost:8080/api/products'
+import { API_URL} from '../appConfig' 
 
 export const fetchProductList = async () => {
   try {

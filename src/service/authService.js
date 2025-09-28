@@ -1,21 +1,20 @@
-import axios from "axios";
-import { toast } from "react-toastify";
-
-const API_URL = "http://localhost:8080/api";
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { API_URL } from '../appConfig'
 
 // Create a single axios instance
 const api = axios.create({
   baseURL: API_URL,
-});
+})
 
 // Attach token automatically to all requests
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token')
   if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`
   }
-  return config;
-});
+  return config
+})
 
 // Handle expired token globally
 api.interceptors.response.use(
@@ -23,32 +22,32 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // Clear expired token
-      localStorage.removeItem("token");
-      toast.error("Session expired. Please login again.");
+      localStorage.removeItem('token')
+      toast.error('Session expired. Please login again.')
       // Redirect to login page
-      window.location.href = "/login";
+      window.location.href = '/login'
     }
-    return Promise.reject(error);
-  }
-);
+    return Promise.reject(error)
+  },
+)
 
 // Export functions using the axios instance
 export const registerUser = async (data) => {
   try {
-    const response = await api.post("/register", data);
-    return response;
+    const response = await api.post('/register', data)
+    return response
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 export const login = async (data) => {
   try {
-    const response = await api.post("/login", data);
-    return response;
+    const response = await api.post('/login', data)
+    return response
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
-export default api;
+export default api
