@@ -1,2 +1,1 @@
-// src/config.js
-export const API_URL = "https://evergreen-agro-backend.onrender.com";
+export const API_URL = "https://evergreen-agro-backend.onrender.com/api";
