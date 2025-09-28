@@ -1,9 +1,11 @@
+/* eslint-disable no-import-assign */
 import axios from 'axios'
 import { API_URL} from '../appConfig' 
 
+const baseUrl = API_URL + '/products'
 export const fetchProductList = async () => {
   try {
-    const response = await axios.get(API_URL)
+    const response = await axios.get(baseUrl)
     return response.data
   } catch (error) {
     console.log('Error fetching product list:', error)
@@ -13,7 +15,7 @@ export const fetchProductList = async () => {
 
 export const fetchProductDetails = async (id) => {
   try {
-    const response = await axios.get(API_URL + '/' + id)
+    const response = await axios.get(baseUrl + '/' + id)
     return response.data
   } catch (error) {
     console.log('Error fetching product details:', error)

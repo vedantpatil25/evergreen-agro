@@ -1,9 +1,11 @@
 import axios from "axios";
 import { API_URL } from "../appConfig";
 
+const baseUrl = API_URL + "/orders";
+
 export const fetchUserOrders = async (token) => {
     try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get(baseUrl, {
             headers: { Authorization: `Bearer ${token}` },
         }); 
         return response.data;
@@ -16,7 +18,7 @@ export const fetchUserOrders = async (token) => {
 export const createOrder = async (orderData, token) => {
     try {
         const response = await axios.post(
-            API_URL+"/create",
+            baseUrl+"/create",
             orderData,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -30,7 +32,7 @@ export const createOrder = async (orderData, token) => {
 export const verifyPayment = async (paymentData, token) => {
     try {
         const response = await axios.post(
-            API_URL+"/verify",
+            baseUrl+"/verify",
             paymentData,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -43,7 +45,7 @@ export const verifyPayment = async (paymentData, token) => {
 
 export const deleteOrder = async (orderId, token) => {
     try {
-        await axios.delete(API_URL+"/"+ orderId, {
+        await axios.delete(baseUrl+"/"+ orderId, {
             headers: { Authorization: `Bearer ${token}` },
         });
     } catch (error) {

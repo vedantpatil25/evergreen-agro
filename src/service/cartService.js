@@ -1,10 +1,12 @@
 import axios from "axios";
 import { API_URL } from "../appConfig";
 
+const baseUrl = API_URL + "/cart";
+
 export const addToCart = async (foodId, token) => {
     try {
         await axios.post(
-            API_URL,
+            baseUrl,
             { foodId },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -16,7 +18,7 @@ export const addToCart = async (foodId, token) => {
 export const removeQtyFromCart = async (foodId, token) => {
     try {
         await axios.post(
-            API_URL+"/remove",
+            baseUrl+"/remove",
             { foodId },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -27,7 +29,7 @@ export const removeQtyFromCart = async (foodId, token) => {
 
 export const getCartData = async (token) => {
     try {
-        const response = await axios.get(API_URL, {
+        const response = await axios.get(baseUrl, {
             headers: { Authorization: `Bearer ${token}` },
           });
           return response.data.items;
@@ -38,7 +40,7 @@ export const getCartData = async (token) => {
 
 export const clearCartItems = async (token, setQuantities) => {
     try {
-        await axios.delete(API_URL, {
+        await axios.delete(baseUrl, {
             headers: { Authorization: `Bearer ${token}` },
         });
         setQuantities({});
