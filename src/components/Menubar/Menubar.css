@@ -1,7 +1,252 @@
-.active {
-    color: rgba(86, 210, 88, 0.704) !important;
+.navbar {
+  padding: 15px 0;
+  transition: all 0.3s ease;
+  background-color: white;
 }
 
-.dropdown-menu li {
-    cursor: pointer;
+.navbar-scrolled {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+.navbar-nav {
+  margin-left: 20px;
+}
+
+.nav-link {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  padding: 8px 16px !important;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #198754;
+}
+
+.nav-link.active {
+  color: #198754 !important;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  background-color: #198754;
+  border-radius: 3px;
+}
+
+/* Cart Icon */
+.cart-icon, .cart-icon-mobile {
+  position: relative;
+  font-size: 1.5rem;
+  color: #333;
+  margin-right: 20px;
+  transition: color 0.2s ease;
+}
+
+.cart-icon:hover {
+  color: #198754;
+}
+
+.cart-icon-mobile {
+  font-size: 1.3rem;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #198754;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-login {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #198754;
+  background-color: transparent;
+  border: 1px solid #198754;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
+.btn-register {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: white;
+  background-color: #198754;
+  border: 1px solid #198754;
+  transition: all 0.3s ease;
+}
+
+.btn-register:hover {
+  background-color: #146c43;
+  border-color: #146c43;
+}
+
+/* User Dropdown */
+.user-dropdown .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.user-dropdown .dropdown-toggle::after {
+  display: none;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e9ecef;
+  transition: border-color 0.3s ease;
+}
+
+.user-dropdown:hover .user-avatar {
+  border-color: #198754;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 200px;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #198754;
+}
+
+.dropdown-item i {
+  color: #6c757d;
+}
+
+.dropdown-item:hover i {
+  color: #198754;
+}
+
+.dropdown-divider {
+  margin: 5px 0;
+}
+
+/* Mobile Menu */
+/* Add or update these styles in your Menubar.css file */
+
+/* Mobile Menu Toggle Button */
+.navbar-toggler {
+  border: 1px solid #dee2e6;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  border-radius: 0.25rem;
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.navbar-toggler:focus {
+  text-decoration: none;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+
+.navbar-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+
+.mobile-auth {
+  padding: 15px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.mobile-auth .list-group {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mobile-auth .list-group-item {
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-auth .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-link.active::after {
+    display: none;
+  }
+  
+  .nav-link {
+    padding: 12px 16px !important;
+  }
 }

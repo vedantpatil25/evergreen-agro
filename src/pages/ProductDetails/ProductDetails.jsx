@@ -1,79 +1,210 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import { fetchProductDetails } from '../../service/productService'
 import { toast } from 'react-toastify'
 import { StoreContext } from '../../context/StoreContext'
+import './ProductDetails.css'
 
 const ProductDetails = () => {
   const { id } = useParams()
-  const { increaseQty } = useContext(StoreContext)
+  const { increaseQty, quantities } = useContext(StoreContext)
   const navigate = useNavigate()
 
   const [data, setData] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [quantity, setQuantity] = useState(1)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  
+  // Check if product is already in cart
+  const isInCart = data.id && quantities[data.id] > 0
 
   useEffect(() => {
     const loadProductDetails = async () => {
+      setLoading(true)
       try {
         const productData = await fetchProductDetails(id)
         setData(productData)
+        // If product is in cart, set initial quantity to match cart
+        if (productData.id && quantities[productData.id] > 0) {
+          setQuantity(quantities[productData.id])
+        }
       } catch (error) {
-        toast.error('Error displaying the Product details.')
+        toast.error('Error displaying the product details.')
+      } finally {
+        setLoading(false)
       }
     }
     loadProductDetails()
-  }, [id])
+  }, [id, quantities])
 
   const addToCart = () => {
-    increaseQty(data.id)
+    // Add to cart multiple times based on quantity
+    for (let i = 0; i < quantity; i++) {
+      increaseQty(data.id)
+    }
+    toast.success(`${data.name} added to cart!`)
     navigate('/cart')
+  }
+  
+  const handleBuyNow = () => {
+    // Add to cart and go directly to checkout
+    for (let i = 0; i < quantity; i++) {
+      increaseQty(data.id)
+    }
+    navigate('/order')
+  }
+  
+  const increaseQuantity = () => {
+    setQuantity(prev => prev + 1)
+  }
+  
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1)
+    }
   }
 
   return (
-    <section className="py-5">
-      <div className="container px-4 px-lg-5 my-5">
-        <div className="row gx-4 gx-lg-5 align-items-center flex-column flex-md-row">
-          {/* Product Image */}
-          <div className="col-12 col-md-6 mb-4 mb-md-0 text-center">
-            <img
-              className="img-fluid"
-              src={data.imageUrl}
-              alt={data.name}
-              style={{
-                maxHeight: '400px',
-                objectFit: 'contain',
-                borderRadius: '20px'
-              }}
-            />
-          </div>
-
-          {/* Product Details */}
-          <div className="col-12 col-md-6 text-start">
-            <div className="fs-6 mb-2">
-              Category:{' '}
-              <span className="badge text-bg-success fs-6">
-                {data.category}
-              </span>
-            </div>
-            <h1 className="display-6 fw-bold mt-2">{data.name}</h1>
-            <div className="fs-4 my-2 text-success">
-              ₹{data.price}.00
-            </div>
-            <p className="lead mb-4">{data.description}</p>
-            <div className="d-flex justify-content-center justify-content-md-start">
-              <button
-                className="btn flex-1 btn-success px-4 py-2"
-                type="button"
-                onClick={addToCart}
-                style={{width: '-webkit-fill-available'}}
-              >
-                <i className="bi-cart-fill me-2"></i>
-                Add to cart
-              </button>
-            </div>
-          </div>
+    <div className="product-details-container">
+      <div className="container py-5">
+        <div className="breadcrumb-nav mb-4">
+          <Link to="/" className="breadcrumb-link">Home</Link>
+          <i className="bi bi-chevron-right"></i>
+          <Link to="/explore" className="breadcrumb-link">Products</Link>
+          <i className="bi bi-chevron-right"></i>
+          <span className="breadcrumb-current">{data.name || 'Product Details'}</span>
         </div>
+        
+        {loading ? (
+          <div className="text-center py-5">
+            <div className="spinner-border text-success" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3 text-muted">Loading product details...</p>
+          </div>
+        ) : (
+          <div className="product-details-card">
+            <div className="row g-0">
+              <div className="col-md-6 product-image-section">
+                <div className="product-image-container">
+                  {!imageLoaded && (
+                    <div className="image-placeholder">
+                      <div className="spinner-border text-success spinner-border-sm" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </div>
+                  )}
+                  <img
+                    className={`product-image ${imageLoaded ? 'loaded' : ''}`}
+                    src={data.imageUrl}
+                    alt={data.name}
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageLoaded(true)}
+                  />
+                </div>
+                
+                {data.category && (
+                  <div className="product-category-badge">
+                    <i className="bi bi-tag-fill me-1"></i>
+                    {data.category}
+                  </div>
+                )}
+              </div>
+              
+              <div className="col-md-6 product-info-section">
+                <div className="product-info-content">
+                  <h1 className="product-title">{data.name}</h1>
+                  
+                  <div className="product-price">
+                    <span className="price-symbol">₹</span>
+                    <span className="price-value">{parseFloat(data.price).toFixed(2)}</span>
+                  </div>
+                  
+                  <div className="product-description">
+                    <h5>Description</h5>
+                    <p>{data.description}</p>
+                  </div>
+                  
+                  <div className="product-meta">
+                    <div className="meta-item">
+                      <span className="meta-label">Category:</span>
+                      <span className="meta-value">{data.category}</span>
+                    </div>
+                    <div className="meta-item">
+                      <span className="meta-label">Product ID:</span>
+                      <span className="meta-value">{data.id}</span>
+                    </div>
+                    {data.stock && (
+                      <div className="meta-item">
+                        <span className="meta-label">Availability:</span>
+                        <span className="meta-value in-stock">
+                          <i className="bi bi-check-circle-fill me-1"></i>
+                          In Stock
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="quantity-selector">
+                    <h5>Quantity</h5>
+                    <div className="quantity-control">
+                      <button 
+                        className="btn-quantity decrease" 
+                        onClick={decreaseQuantity}
+                        disabled={quantity <= 1}
+                      >
+                        <i className="bi bi-dash"></i>
+                      </button>
+                      <span className="quantity-display">{quantity}</span>
+                      <button 
+                        className="btn-quantity increase" 
+                        onClick={increaseQuantity}
+                      >
+                        <i className="bi bi-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="product-actions">
+                    <button
+                      className="btn btn-add-to-cart"
+                      type="button"
+                      onClick={addToCart}
+                    >
+                      <i className="bi bi-cart-plus me-2"></i>
+                      {isInCart ? 'Update Cart' : 'Add to Cart'}
+                    </button>
+                    <button
+                      className="btn btn-buy-now"
+                      type="button"
+                      onClick={handleBuyNow}
+                    >
+                      <i className="bi bi-lightning-fill me-2"></i>
+                      Buy Now
+                    </button>
+                  </div>
+                  
+                  <div className="product-features">
+                    <div className="feature-item">
+                      <i className="bi bi-truck"></i>
+                      <span>Free shipping on orders over ₹500</span>
+                    </div>
+                    <div className="feature-item">
+                      <i className="bi bi-shield-check"></i>
+                      <span>Quality guaranteed products</span>
+                    </div>
+                    <div className="feature-item">
+                      <i className="bi bi-arrow-return-left"></i>
+                      <span>Easy returns within 7 days</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   )
 }
 
