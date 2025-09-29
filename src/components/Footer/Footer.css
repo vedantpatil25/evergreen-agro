@@ -1,0 +1,36 @@
+.footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e7e7e7;
+}
+
+.footer-link {
+  color: #6c757d;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #198754;
+  text-decoration: none;
+}
+
+.social-icons a {
+  color: #198754;
+  font-size: 1.2rem;
+  transition: opacity 0.2s;
+}
+
+.social-icons a:hover {
+  opacity: 0.8;
+}
+
+hr {
+  background-color: #e2e2e2;
+}
+
+address p {
+  margin-bottom: 0.5rem;
+}
+.small-email {
+  font-size: 0.9rem;
+}
